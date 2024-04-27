@@ -18,6 +18,8 @@ export class GifsService {
 
   constructor(private http: HttpClient) {
     this._historial = JSON.parse(localStorage.getItem('Historial')!) || [];
+    this.resultados = JSON.parse(localStorage.getItem('Imagenes')!) || [];
+   
     /* if (localStorage.getItem('Historial')) {
       this._historial = JSON.parse(localStorage.getItem('Historial')!);
     } */
@@ -31,6 +33,7 @@ export class GifsService {
       this._historial = this._historial.splice(0, 10);
 
       localStorage.setItem('Historial', JSON.stringify(this._historial));
+      
     }
 
     this.http
@@ -38,8 +41,11 @@ export class GifsService {
         `https://api.giphy.com/v1/gifs/search?api_key=lnYJFStfYykY9u3ddOKnKH7PsKooC1tP&q=${query}&limit=10&`
       )
       .subscribe((resp) => {
-        console.log(resp.data);
+        
         this.resultados = resp.data;
+      
+        
+        localStorage.setItem('Imagenes', JSON.stringify(this.resultados));
       });
   }
 }
